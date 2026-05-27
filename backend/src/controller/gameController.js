@@ -1,4 +1,3 @@
-import e from "express";
 import gameModel from "../models/game.js";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -109,6 +108,22 @@ gameController.deleteGame = async (req, res) => {
 
         res.status(200).json({ message: 'Game deleted successfully' });
 
+    } catch (error) {
+        console.log("error"+ error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+//GET BY ID
+gameController.getGameById = async (req, res) => {
+    try {
+        const game = await gameModel.findById(req.params.id);
+
+        if (!game) {
+            return res.status(404).json({ message: 'Game not found' });
+        }
+
+        res.status(200).json(game);
     } catch (error) {
         console.log("error"+ error);
         res.status(500).json({ message: 'Internal Server Error' });
